@@ -1,13 +1,31 @@
 // IIFE -- Immediately Invoked Function Expression
 
-
+/** 
+ * Name: Shailee Patel, varun Patel
+  Student Id: 100800440, 
+  Date: 6 February, 2022
+  Reference: https://zuuwa.com/
+  https://getbootstrap.com/docs/5.1/components/navbar/
+  https://stackoverflow.com/questions/51660097/redirect-to-home-page-after-3-seconds
+*/
 // AKA -- Anonymous Self-Executing Function
+
 (function()
 {
     // named funstion option 
     function Start()
     {
-        
+        let DocumentBody = document.body;   
+        let Footer = document.createElement("footer");
+
+        let FooterParagraph = `<nav class="navbar navbar-light bg-light" id="FooterParagraph">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"><i class="far fa-copyright"></i> Copyright 2022</a>
+        </div>
+      </nav>`
+
+        Footer.innerHTML = FooterParagraph;     
+        DocumentBody.appendChild(Footer)
         /**
          * Displays the information in Home Page through JavaScript.
          */
@@ -26,30 +44,34 @@
             
             // Step 2 create an element to insert
             let MainParagraph = document.createElement("p");
-            let img = document.createElement("img");
+            let Img = document.createElement("img");
             let Article = document.createElement("article");
             let ArticleParagraph = `<p id="ArticleParagraph" class="mt-3">Zuuwa is an IT based company located in Ontario, Canada . 
             The company is serving from last 5 years in the Website Design & Development, 
             Digital Media & Graphic Design. Our dedicated designers & developers can completed all your tasks 
             and deliver quality work on/before time and within your budget. Expertise in Website Design and Development, 
             Newsletter Design and Banner Design. Create wow moments for any clients are our achievement. </p>`;
+            let ImageParagraph = `<img src = "../zuuwa.jpg" id="ImageParagraph">`
+            let FooterParagraph = `<nav class="navbar fixed-bottom navbar-light bg-light" id="FooterParagraph">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#"><i class="far fa-copyright"></i> Copyright 2022</a>
+            </div>
+          </nav>`
 
             // Step 3 configure new element
             MainParagraph.setAttribute("id", "MainParagraph");
             MainParagraph.setAttribute("class", "mt-3");
-            
-            
             Article.setAttribute("class", "container");
-            img.setAttribute("id", "Image");
-            img.setAttribute("class", "container");
-            img.style.width = "200px";
-            img.src = "http://zuuwa.com/wp-content/uploads/2021/08/Page-1-quality100-1-scaled.jpg";
+            Img.setAttribute("class", "container");
 
             // Step 4 add / insert new element
             MainContent.appendChild(MainParagraph);
             Article.innerHTML = ArticleParagraph;
-            DocumentBody.appendChild(img);
+            Footer.innerHTML = FooterParagraph; 
+            Img.innerHTML = ImageParagraph;           
+            DocumentBody.appendChild(Img);
             DocumentBody.appendChild(Article);
+            DocumentBody.appendChild(Footer)
             document.getElementById("projectname").innerHTML = "Project";
 
 
@@ -62,6 +84,9 @@
         function DisplayProductsPage()
         {
             console.log("Our Products Page");
+           
+       
+
             document.getElementById("projectname").innerHTML = "Project";
 
         }
@@ -95,6 +120,11 @@
             document.getElementById("projectname").innerHTML = "Project";
 
             let sendButton = document.getElementById("sendButton");
+            let FooterParagraph = `<nav class="navbar fixed-bottom navbar-light bg-light" id="FooterParagraph">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#"><i class="far fa-copyright"></i> Copyright 2022</a>
+            </div>
+          </nav>`
 
             sendButton.addEventListener("click", function(event)
             {
@@ -108,6 +138,8 @@
 
                 
             });
+            Footer.innerHTML = FooterParagraph;     
+            DocumentBody.appendChild(Footer)
 
             
         }
