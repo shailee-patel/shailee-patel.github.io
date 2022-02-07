@@ -1,3 +1,9 @@
+/**
+ * Name: Shailee Patel, varun Patel
+  Student Id: 100800440, 100739468
+  Date: 6 February, 2022
+ */
+
 class Contact
 {
     // public properties (getters and setters)
