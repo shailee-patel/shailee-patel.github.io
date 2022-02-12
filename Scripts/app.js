@@ -1,180 +1,293 @@
 // IIFE -- Immediately Invoked Function Expression
-
-/** 
- * Name: Shailee Patel, varun Patel
-  Student Id: 100800440, 100739468
-  Date: 6 February, 2022
-  Reference: https://zuuwa.com/
-  https://getbootstrap.com/docs/5.1/components/navbar/
-  https://stackoverflow.com/questions/51660097/redirect-to-home-page-after-3-seconds
-*/
 // AKA -- Anonymous Self-Executing Function
-
 (function()
 {
-    // named funstion option 
-    function Start()
-    {
-        let DocumentBody = document.body;   
-        let Footer = document.createElement("footer");
-
-        let FooterParagraph = `<nav class="navbar navbar-light bg-light" id="FooterParagraph">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#"><i class="far fa-copyright"></i> Copyright 2022</a>
-        </div>
-      </nav>`
-
-        Footer.innerHTML = FooterParagraph;     
-        DocumentBody.appendChild(Footer)
-        /**
-         * Displays the information in Home Page through JavaScript.
-         */
+    
         function DisplayHomePage()
         {
             console.log("Home Page");
-            let AboutUsButton = document.getElementById("AboutUsButton");
-            AboutUsButton.addEventListener("click", function()
-            {
+
+            $("#AboutUsButton").on("click", () => {
                 location.href = "about.html";
             });
 
-            // Step 1 get a reference to an entry point(s) (insertion point / deletion point)
-            let MainContent = document.getElementsByTagName("main")[0];
-            let DocumentBody = document.body;
-            
-            // Step 2 create an element to insert
-            let MainParagraph = document.createElement("p");
-            let Img = document.createElement("img");
-            let Article = document.createElement("article");
-            let ArticleParagraph = `<p id="ArticleParagraph" class="mt-3">Zuuwa is an IT based company located in Ontario, Canada . 
-            The company is serving from last 5 years in the Website Design & Development, 
-            Digital Media & Graphic Design. Our dedicated designers & developers can completed all your tasks 
-            and deliver quality work on/before time and within your budget. Expertise in Website Design and Development, 
-            Newsletter Design and Banner Design. Create wow moments for any clients are our achievement. </p>`;
-            let ImageParagraph = `<img src = "../zuuwa.jpg" id="ImageParagraph">`
-            let FooterParagraph = `<nav class="navbar fixed-bottom navbar-light bg-light" id="FooterParagraph">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="#"><i class="far fa-copyright"></i> Copyright 2022</a>
-            </div>
-          </nav>`
-
-            // Step 3 configure new element
-            MainParagraph.setAttribute("id", "MainParagraph");
-            MainParagraph.setAttribute("class", "mt-3");
-            Article.setAttribute("class", "container");
-            Img.setAttribute("class", "container");
-
-            // Step 4 add / insert new element
-            MainContent.appendChild(MainParagraph);
-            Article.innerHTML = ArticleParagraph;
-            Footer.innerHTML = FooterParagraph; 
-            Img.innerHTML = ImageParagraph;           
-            DocumentBody.appendChild(Img);
-            DocumentBody.appendChild(Article);
-            DocumentBody.appendChild(Footer)
-            document.getElementById("projectname").innerHTML = "Project";
-
-
+           
+            $("main").append(`<p id="MainParagraph" class="mt-3">This is the Main Paragraph</p>`);
+            $("body").append(`<article class="container">
+            <p id="ArticleParagraph" class="mt-3">This is the Article Paragraph</p>
+            </article>`);
 
         }
 
-        /**
-         * Displays the information in Products Page through JavaScript.
-         */
         function DisplayProductsPage()
         {
             console.log("Our Products Page");
-           
-       
-
-            document.getElementById("projectname").innerHTML = "Project";
-
         }
 
-        /**
-         * Displays the information in Services Page through JavaScript.
-         */
         function DisplayServicesPage()
         {
             console.log("Our Services Page");
-            document.getElementById("projectname").innerHTML = "Project";
-
         }
 
-        /**
-         * Displays the information in About Page through JavaScript.
-         */
         function DisplayAboutPage()
         {
             console.log("About Us Page");
-            document.getElementById("projectname").innerHTML = "Project";
+        }
+        
+        /**
+         * Adds a contact object to localStorage
+         *
+         * @param {string} fullName
+         * @param {string} contactNumber
+         * @param {string} emailAddress
+         */
+        function AddContact(fullName, contactNumber, emailAddress)
+        {
+            let contact = new core.Contact(fullName, contactNumber, emailAddress);
+            if(contact.serialize())
+            {
+                let key = contact.FullName.substring(0, 1) + Date.now();
 
+                localStorage.setItem(key, contact.serialize());
+            }
         }
 
         /**
-         * Displays the information in Contact Page through JavaScript.
+         * This method validates an input text field in the form and displays
+         * an error in the message area div element
+         * 
+         * @param {string} input_field_ID 
+         * @param {RegExp} regular_expression 
+         * @param {string} error_message 
          */
+        function ValidateField(input_field_ID, regular_expression, error_message)
+        {
+            let messageArea = $("#messageArea").hide();
+           
+            $("#" + input_field_ID).on("blur", function()
+            {
+                let input_text_field = $(this).val();
+                if(!regular_expression.test(input_text_field)) 
+                {
+                    $(this).trigger("focus").trigger("select");; 
+                    
+                    messageArea.addClass("alert alert-danger").text(error_message).show(); 
+            
+                }
+                else 
+                {
+                    messageArea.removeAttr("class").hide(); 
+                }
+            });
+        }
+
+        function ContactFormValidation()
+        {
+            ValidateField("fullName",/^([A-Z][a-z]{1,3}.?\s)?([A-Z][a-z]{1,25})+(\s|,|-)([A-Z][a-z]{1,25})+(\s|,|-)*$/,"Please enter a valid Full Name. This must include at least a Capitalized first name followed by a Capitalized last Name.");
+            ValidateField("contactNumber",/^(\+\d{1,3}[\s-.])?\(?\d{3}\)?[\s-.]?\d{3}[\s-.]?\d{4}$/,"Please enter a valid Contact Number. Example: (905) 555-5555");
+            ValidateField("emailAddress",/^[a-zA-z0-9._-]+@[a-zA-z0-9.-]+\.[a-zA-Z]{2,10}$/,"Please enter a valid Email Address.");
+
+        }
+
         function DisplayContactPage()
         {
             console.log("Contact Us Page");
-            document.getElementById("projectname").innerHTML = "Project";
 
-            let sendButton = document.getElementById("sendButton");
-            let FooterParagraph = `<nav class="navbar fixed-bottom navbar-light bg-light" id="FooterParagraph">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="#"><i class="far fa-copyright"></i> Copyright 2022</a>
-            </div>
-          </nav>`
-
-            sendButton.addEventListener("click", function(event)
-            {
-                event.preventDefault();
-                        
-                let contact = new Contact(fullName.value, contactNumber.value, emailAddress.value, message.value);
-                console.log(contact.toString());
-
-                // The idea for this line of code is taken from https://stackoverflow.com/questions/51660097/redirect-to-home-page-after-3-seconds
-                setTimeout(function() {window.location = "../index.html";}, 3000);
-
-                
-            });
-            Footer.innerHTML = FooterParagraph;     
-            DocumentBody.appendChild(Footer)
-
+            ContactFormValidation();
             
+            let sendButton = document.getElementById("sendButton");
+            let subscribeCheckbox = document.getElementById("subscribeCheckbox");
+
+            sendButton.addEventListener("click", function()
+            {
+                
+                if(subscribeCheckbox.checked)
+                {
+                    AddContact(fullName.value, contactNumber.value, emailAddress.value);
+                }
+            });
         }
 
+        function DisplayContactListPage()
+        {
+            console.log("Contact-List Page");
+            if(localStorage.length > 0)
+            {
+                let contactList = document.getElementById("contactList");
+
+                let data = ""; // data container -> add deserialized data from localstorage
+
+                let keys = Object.keys(localStorage); // returns a string array of keys
+
+                let index = 1; // counts how many keys
+
+                // for every key in the keys array (collection), loop
+                for (const key of keys) 
+                {
+                    let contactData = localStorage.getItem(key); // get localStorage data value related to the key
+
+                    let contact = new core.Contact(); // create a new empty contact object
+                    contact.deserialize(contactData);
+
+                    // inject a repeatable row into the contactList
+                    data += `<tr>
+                    <th scope="row" class="text-center">${index}</th>
+                    <td>${contact.FullName}</td>
+                    <td>${contact.ContactNumber}</td>
+                    <td>${contact.EmailAddress}</td>
+                    <td class="text-center"><button value="${key}" class="btn btn-primary btn-sm edit"><i class="fas fa-edit fa-sm"></i> Edit</button></td>
+                    <td class="text-center"><button value="${key}" class="btn btn-danger btn-sm delete"><i class="fas fa-trash-alt fa-sm"></i> Delete</button></td>
+                    </tr>
+                    `;
+
+                    index++;
+                }
+
+                contactList.innerHTML = data;
+
+
+                $("#addButton").on("click",() =>
+                {
+                    location.href = "edit.html#add";
+                });
+                
+                $("button.delete").on("click", function()
+                {
+                    if(confirm("Are you sure?"))
+                    {
+                        localStorage.removeItem($(this).val());
+                    }
+                
+                    location.href = "contact-list.html";
+                });
+
+                $("button.edit").on("click", function()
+                {
+                    location.href = "edit.html#" + $(this).val();
+                });
+            }
+        }
+
+        function DisplayEditPage()
+        {
+            console.log("Edit Page");
+
+            ContactFormValidation();
+
+            let page = location.hash.substring(1);
+
+            switch(page)
+            {
+                case "add":
+                    {
+                        $("main>h1").text("Add Contact");
+
+                        $("#editButton").html(`<i class="fas fa-plus-circle fa-lg"></i> Add`)
+
+
+                        $("#editButton").on("click", (event)=>
+                        {
+                            event.preventDefault();
+                            // Add Contact
+                            AddContact(fullName.value, contactNumber.value, emailAddress.value);
+                            // refresh the contact-list page
+                            location.href = "contact-list.html";
+                        });
+
+                        $("#cancelButton").on("click", () =>
+                        {
+                            location.href = "contact-list.html";
+                        });
+
+
+
+                    }
+                    break;
+                default:
+                    {
+                            let contact = new core.Contact();
+                            contact.deserialize(localStorage.getItem(page));
+
+                            // display the contact info in the edit form
+                            $("#fullName").val(contact.FullName);
+                            $("#contactNumber").val(contact.ContactNumber);
+                            $("#emailAddress").val(contact.EmailAddress);
+
+                            // when Edit is pressed - update the contact
+                            $("#editButton").on("click", (event)=>
+                            {
+                            event.preventDefault();
+
+                            // get any changes from the form
+                            contact.FullName = $("#fullName").val();
+                            contact.ContactNumber = $("#contactNumber").val();
+                            contact.EmailAddress = $("#emailAddress").val();
+
+                            // replace the item in localStorage
+                            localStorage.setItem(page, contact.serialize());
+
+                            // return to the contact-list
+                            location.href ="contact-list.html";
+                        });
+
+                        $("#cancelButton").on("click", () =>
+                        {
+                            location.href ="contact-list.html";
+                        });
+                    }
+                    break;
+            }
+        }
+
+        function DisplayLoginPage()
+        {
+            console.log("Login Page");
+        }
+
+        function DisplayRegisterPage()
+        {
+            console.log("Register Page");
+        }
+
+// named funstion option 
+    function Start()
+    {
         
         console.log("App Started!");
 
-        switch(document.title)
-        {
-            case "Home":
-                DisplayHomePage();
-                break;
-            case "Our Products":
-                DisplayProductsPage();
-                break;
-            case "Our Services":
-                DisplayServicesPage();
-                break;
-            case "About Us":
-                DisplayAboutPage();
-                break;
-            case "Contact Us":
-                DisplayContactPage();
-                break; 
-            case "Navbar":
-                navbar();
-                break;          
+        switch (document.title) {
+          case "Home":
+            DisplayHomePage();
+            break;
+          case "Our Products":
+            DisplayProductsPage();
+            break;
+          case "Our Services":
+            DisplayServicesPage();
+            break;
+          case "About Us":
+            DisplayAboutPage();
+            break;
+          case "Contact Us":
+            DisplayContactPage();
+            break;
+          case "Contact-List":
+            DisplayContactListPage();
+            break;
+          case "Edit":
+            DisplayEditPage();
+            break;
+          case "Login":
+            DisplayLoginPage();
+            break;
+          case "Register":
+            DisplayRegisterPage();
+            break;
         }
-
 
 
     }
 
-
     window.addEventListener("load", Start);
-    
 
 })();
