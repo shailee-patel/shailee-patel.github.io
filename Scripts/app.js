@@ -1,3 +1,53 @@
+/*
+* Name: Shailee Patel, Varun Patel
+* Student Id: 100800440, 100739468
+* Date Completed: 27 February, 2022
+*/
+
+(function(core){
+
+    class User
+    {
+        // constructor
+        constructor(FirstName = "", lastName = "", emailAddress= "", username = "", password = "")
+        {
+            this.firstName = FirstName;
+            this.LastName = lastName;
+            this.EmailAddress = emailAddress;
+            this.Username = username;
+            this.Password = password;
+        }
+
+        // overriden functions
+        toString()
+        {
+            return `First Name   : ${this.firstName}\nLast Name  : ${this.LastName}\nEmail Address  : ${this.EmailAddress}\nUser Name   : ${this.Username}`;
+        }
+
+        serialize()
+        {
+            if(this.firstName !== "" && this.LastName !== "" && this.EmailAddress !== "" && this.Username !== "")
+            {
+                return `${this.firstName},${this.LastName},${this.EmailAddress},${this.Username}`;
+            }
+            console.error("One or more propperties of the User Object are missing or invalid");
+            return null;
+        }
+
+        deserialize(data) 
+        {
+            let propertyArray = data.split(",")
+            this.firstName = propertyArray[0];
+            this.LastName = propertyArray[1];
+            this.EmailAddress = propertyArray[2];
+            this.Username = propertyArray[3];
+        }
+    }
+
+    core.User = User;
+
+})(core || (core={}));
+
 // IIFE -- Immediately Invoked Function Expression
 // AKA -- Anonymous Self-Executing Function
 (function()
@@ -93,6 +143,24 @@
         }
 
         /**
+         * Adds the object to locatStorage
+         *
+         * @param {string} FirstName
+         * @param {string} lastName
+         * @param {string} emailAddress
+         */
+        function RegisterContact(FirstName, lastName, emailAddress)
+        {
+            let regContact = new core.RegContact(FirstName, lastName, emailAddress);
+            if(regContact.serialize())
+            {
+                let key = regContact.firstName.substring(0, 1) + Date.now();
+
+                localStorage.setItem(key, regContact.serialize());
+            }
+        }
+
+        /**
          * This method validates an input text field in the form and displays
          * an error in the message area div element
          * 
@@ -121,6 +189,10 @@
             });
         }
 
+        /**
+         *Validates the contact Form
+         *
+         */
         function ContactFormValidation()
         {
             ValidateField("fullName",/^([A-Z][a-z]{1,3}.?\s)?([A-Z][a-z]{1,25})+(\s|,|-)([A-Z][a-z]{1,25})+(\s|,|-)*$/,"Please enter a valid Full Name. This must include at least a Capitalized first name followed by a Capitalized last Name.");
@@ -129,6 +201,25 @@
 
         }
 
+        /**
+         * Validates the Register Form
+         *
+         */
+        function RegisterFormValidation()
+        {
+            ValidateField("FirstName", /^([A-Z][a-z]{1,3}.?\s)?([A-Z][a-z]{2,25})+([A-Z][a-z]{1,25})?(\s|,|-)*$/, "Please enter a valid First Name. This must include the at least a Captialized first letter and the word should be more than 2 characters. ");
+            ValidateField("lastName", /^([A-Z][a-z]{1,3}.?\s)?([A-Z][a-z]{2,25})+([A-Z][a-z]{1,25})?(\s|,|-)*/, "Please enter a valid Last Name. This must include the at least a Captialized first letter and the word should be more than 2 characters. ");
+            ValidateField("emailAddress",/^([a-zA-z0-9._-]{8,26})+@[a-zA-z0-9.-]+\.[a-zA-Z]{2,10}/,"Please enter a valid Email Address having at least 8 characters.");
+            ValidateField("password", /^([A-Z][a-z]{1,3}.?\s)?([A-Z][a-z]{6,25})+([A-Z][a-z]{1,25})?(\s|,|-)*$/, "Please enter your password with at least one capital letter and should be more than 6 characters.");
+            ValidateField("confirmPassword", /^([A-Z][a-z]{1,3}.?\s)?([A-Z][a-z]{6,25})+([A-Z][a-z]{1,25})?(\s|,|-)*$/, "Your confirm password should match your password and should be more than 6 characters.");
+
+
+        }
+
+        /**
+         * Contact Display page function
+         *
+         */
         function DisplayContactPage()
         {
             console.log("Contact Us Page");
@@ -145,6 +236,24 @@
                 {
                     AddContact(fullName.value, contactNumber.value, emailAddress.value);
                 }
+            });
+        }
+
+        /**
+         * Register Page Function
+         *
+         */
+        function DisplayRegisterPage()
+        {
+            console.log("Register Page");
+
+            RegisterFormValidation();
+
+            let submitButton = document.getElementById("submitButton");
+
+            submitButton.addEventListener("click", function()
+            {
+                RegisterContact(FirstName.value, lastName.value, emailAddress.value);
             });
         }
 
@@ -366,10 +475,7 @@
             }
         }
 
-        function DisplayRegisterPage()
-        {
-            console.log("Register Page");
-        }
+
 
 // named funstion option 
     function Start()
